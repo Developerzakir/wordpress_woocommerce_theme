@@ -200,3 +200,53 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+
+// Add Theme Settings menu
+function my_theme_settings_menu() {
+    add_menu_page(
+        'Theme Settings', 
+        'Theme Settings', 
+        'manage_options', 
+        'theme-settings', 
+        'my_theme_settings_page_html', 
+        'dashicons-admin-generic',
+        2
+    );
+}
+add_action('admin_menu', 'my_theme_settings_menu');
+
+
+// Register settings
+function my_theme_settings_init() {
+    register_setting('theme_settings_group', 'contact_phone');
+    register_setting('theme_settings_group', 'clearence_text');
+}
+add_action('admin_init', 'my_theme_settings_init');
+
+
+// Theme Settings Page HTML callback (backend form)
+function my_theme_settings_page_html() {
+    ?>
+    <div class="wrap">
+        <h1>Theme Settings</h1>
+
+        <form action="options.php" method="post">
+            <?php settings_fields('theme_settings_group'); ?>
+
+            <table class="form-table">
+
+                <tr>
+                    <th>Contact Phone</th>
+                    <td><input type="text" name="contact_phone" value="<?php echo esc_attr(get_option('contact_phone')); ?>" style="width:300px;"></td>
+                </tr>
+                <tr>
+                    <th>Clearence Text</th>
+                    <td><input type="text" name="clearence_text" value="<?php echo esc_attr(get_option('clearence_text')); ?>" style="width:300px;"></td>
+                </tr>
+            </table>
+
+            <?php submit_button('Save Settings'); ?>
+        </form>
+    </div>
+    <?php
+}

@@ -3,6 +3,7 @@
 
 
 <!-- molla/index-4.html  22 Nov 2019 09:53:08 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +24,7 @@
     <meta name="msapplication-TileColor" content="#cc9966">
     <meta name="msapplication-config" content="<?php echo get_stylesheet_directory_uri() ?>/assets/images/icons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-   
+
     <?php wp_head(); ?>
 </head>
 
@@ -33,7 +34,15 @@
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
-                        <a href="tel:#"><i class="icon-phone"></i>Call: +0123 456 789</a>
+                        <?php
+                        $contact_phone = get_option('contact_phone'); // Get the saved phone number
+                        if ($contact_phone) :
+                        ?>
+                            <a href="tel:<?php echo esc_attr($contact_phone); ?>">
+                                <i class="icon-phone"></i>
+                                Call:+ <?php echo esc_html($contact_phone); ?>
+                            </a>
+                        <?php endif; ?>
                     </div><!-- End .header-left -->
 
                     <div class="header-right">
@@ -81,9 +90,14 @@
                             <span class="sr-only">Toggle mobile menu</span>
                             <i class="icon-bars"></i>
                         </button>
-                        
-                        <a href="index.html" class="logo">
-                            <img src="<?php echo get_stylesheet_directory_uri() ?>/assets/images/demos/demo-4/logo.png" alt="Molla Logo" width="105" height="25">
+
+                        <a href="<?php echo esc_url(home_url('/')); ?>" class="logo">
+                            <?php
+                            if (has_custom_logo()) {
+                                the_custom_logo(); // Displays the uploaded logo
+                            } else { ?>
+                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/demos/demo-4/logo.png" alt="Molla Logo" width="105" height="25">
+                            <?php } ?>
                         </a>
                     </div><!-- End .header-left -->
 
@@ -606,7 +620,16 @@
                     </div><!-- End .header-center -->
 
                     <div class="header-right">
-                        <i class="la la-lightbulb-o"></i><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+                        <i class="la la-lightbulb-o"></i>
+                        
+                         <?php
+                        $clearence_text = get_option('clearence_text'); // Get the saved clearence text
+                        if ($clearence_text) :
+                        ?>
+                            <p>
+                                <?php echo esc_html($clearence_text); ?>
+                            </p>
+                        <?php endif; ?>
                     </div>
                 </div><!-- End .container -->
             </div><!-- End .header-bottom -->
